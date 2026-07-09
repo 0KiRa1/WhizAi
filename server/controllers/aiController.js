@@ -4,11 +4,9 @@ import { clerkClient } from "@clerk/express";
 import axios from "axios";
 import {v2 as cloudinary} from 'cloudinary'
 import fs from "fs";
+import { CanvasFactory } from "pdf-parse/worker";
 import { PDFParse } from "pdf-parse";
 
-const pdfData = await parser.getText();
-
-await parser.destroy();
 
 const AI = new OpenAI({
     apiKey: process.env.GEMINI_API_KEY,
