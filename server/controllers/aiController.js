@@ -6,6 +6,10 @@ import {v2 as cloudinary} from 'cloudinary'
 import fs from "fs";
 import { PDFParse } from "pdf-parse";
 
+const pdfData = await parser.getText();
+
+await parser.destroy();
+
 const AI = new OpenAI({
     apiKey: process.env.GEMINI_API_KEY,
     baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/"
@@ -255,10 +259,17 @@ export const resumeReview = async (req, res) => {
         }
 
         const dataBuffer = fs.readFileSync(resume.path);
+        const { PDFParse } = await import("pdf-parse");
+        const { CanvasFactory } = await import("pdf-parse/worker");
 
         const parser = new PDFParse({
-        data: dataBuffer,
+            data: dataBuffer,
+            CanvasFactory,
         });
+
+        // const parser = new PDFParse({
+        // data: dataBuffer,
+        // });
 
         const pdfData = await parser.getText();
         const prompt = `Review the following resume and provide constructive feedback on its strengths, weaknesses, and areas for improvement.
